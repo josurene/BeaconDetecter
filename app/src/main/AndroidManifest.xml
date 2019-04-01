@@ -21,8 +21,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name=".RegionsNewBeaconService" />
-        <service android:name=".RegionsNewBeaconService2" />
+        <service android:name=".BeaconServiceOld" />
+        <service android:name=".BeaconServiceNew" />
     </application>
 
 </manifest>

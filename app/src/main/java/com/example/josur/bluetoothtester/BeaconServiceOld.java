@@ -9,15 +9,13 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Binder;
 import android.os.IBinder;
-import android.os.ParcelUuid;
 import android.support.annotation.Nullable;
 import android.util.Log;
-import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class RegionsNewBeaconService extends Service implements RegionsBeaconService{
+public class BeaconServiceOld extends Service implements RegionsBeaconService{
 
     private final IBinder mBinder = new LocalBinder();
 
@@ -88,9 +86,9 @@ public class RegionsNewBeaconService extends Service implements RegionsBeaconSer
      * runs in the same process as its clients, we don't need to deal with IPC.
      */
     public class LocalBinder extends Binder {
-        RegionsNewBeaconService getService() {
+        BeaconServiceOld getService() {
             // Return this instance of LocalService so clients can call public methods
-            return RegionsNewBeaconService.this;
+            return BeaconServiceOld.this;
         }
     }
 
@@ -109,6 +107,22 @@ public class RegionsNewBeaconService extends Service implements RegionsBeaconSer
     @Override
     public void setListener(BeaconListener listener) {
 
+    }
+
+    @Override
+    public boolean isBlueToothOn() {
+        boolean on = false;
+
+        if(mBluetoothAdapter != null){
+            on = mBluetoothAdapter.isEnabled();
+        }
+
+        return on;
+    }
+
+    @Override
+    public void restart() {
+        startBlueService();
     }
 
 

@@ -3,25 +3,17 @@ package com.example.josur.bluetoothtester;
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.bluetooth.le.BluetoothLeScanner;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.util.Log;
-import android.widget.LinearLayout;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-public class RegionsNewBeaconService2 extends Service implements RegionsBeaconService{
+public class BeaconServiceNew extends Service implements RegionsBeaconService{
 
     private final IBinder mBinder = new LocalBinder();
 
@@ -53,9 +45,7 @@ public class RegionsNewBeaconService2 extends Service implements RegionsBeaconSe
 
 
         }else {
-            //should i ask the user to turn on bluetooth? maybe
-            //Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            //startActivityForResult(enableBtIntent, 6969);
+            Log.i("no adapter","");
         }
     }
 
@@ -111,9 +101,9 @@ public class RegionsNewBeaconService2 extends Service implements RegionsBeaconSe
      * runs in the same process as its clients, we don't need to deal with IPC.
      */
     public class LocalBinder extends Binder {
-        RegionsNewBeaconService2 getService() {
+        BeaconServiceNew getService() {
             // Return this instance of LocalService so clients can call public methods
-            return RegionsNewBeaconService2.this;
+            return BeaconServiceNew.this;
         }
     }
 
@@ -136,6 +126,23 @@ public class RegionsNewBeaconService2 extends Service implements RegionsBeaconSe
     @Override
     public void setListener(BeaconListener listener) {
         this.listener = listener;
+    }
+
+    @Override
+    public boolean isBlueToothOn() {
+        boolean on = false;
+
+        if(mBluetoothAdapter != null){
+            on = mBluetoothAdapter.isEnabled();
+        }
+
+        return on;
+    }
+
+    @Override
+    public void restart() {
+        enabled = true;
+        setCallback();
     }
 
     static final char[] hexArray = "0123456789ABCDEF".toCharArray();
